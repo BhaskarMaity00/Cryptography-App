@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"content="width=device-width",initial-scale="1.0">
+	<title>Cryptography</title>
+	<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+	
+</head>
+<div class="form-structor">
+	<div class="signup">
+		<h2 class="form-title" id="signup">Encryption</h2>
+		<form id="encrypt" action="{{url_for('encryption')}}" method="post" enctype="multipart/form-data">
+			<div class="form-holder">
+				<p style="color:#0d005a;text-align:center;">Do You Have Key?</p>
+				<input type="file" class="input"id="existkey" name="existkey" accept = ".bin" />
+				<input type="text" class="input" id="txt" name="txt" placeholder="Enter Your Input" />
+			</div>
+			<br><br>
+			<button class="submit-btn">Encrypt</button>
+			<div id="msg" style="color: white;text-align:center;margin: 30px;width: 200px;height: 20px;display: flex;justify-content: center;background:#0e005a00;">{{msg}}</div>
+		</form>
+	</div>
+	<div class="login slide-up">
+		<div class="center">
+			<h2 class="form-title" id="login">Decryption</h2>
+			<form  id="decrypt" method="post" enctype="multipart/form-data">
+				<div class="form-holder">
+					<p style="color:#0d005a;text-align:center;">Enter your key.bin file</p>
+					<input type="file" class="input"id="keyInput" name="key" accept = ".bin" />
+					<p style="padding:0;color:#0d005a;text-align:center;">Enter your enctxt.bin file</p>
+					<input type="file" class="input" id="txtInput" name="txt" accept = ".bin" />
+				</div>
+				<!-- <button class="submit-btn">Decryption</button> -->
+				<input class="submit-btn" type="submit" value="Decrypt">
+			</form>
+			<div id="plaintext" style="color: rgb(2, 153, 35);text-align:center;margin: auto;width: 200px;height: 50px; border: 2px solid rgba(0, 0, 0, 0.509);display: flex;justify-content: center;"></div>
+		</div>
+	</div>
+</div>
+<script>
+	console.clear();
+
+	const loginBtn = document.getElementById('login');
+	const signupBtn = document.getElementById('signup');
+
+	loginBtn.addEventListener('click', (e) => {
+		let parent = e.target.parentNode.parentNode;
+		Array.from(e.target.parentNode.parentNode.classList).find((element) => {
+			if(element !== "slide-up") {
+				parent.classList.add('slide-up')
+			}else{
+				signupBtn.parentNode.classList.add('slide-up')
+				parent.classList.remove('slide-up')
+			}
+		});
+	});
+
+	signupBtn.addEventListener('click', (e) => {
+		let parent = e.target.parentNode;
+		Array.from(e.target.parentNode.classList).find((element) => {
+			if(element !== "slide-up") {
+				parent.classList.add('slide-up')
+			}else{
+				loginBtn.parentNode.parentNode.classList.add('slide-up')
+				parent.classList.remove('slide-up')
+			}
+		});
+	});
+
+
+
+
+	document.getElementById('decrypt').onsubmit = function(event){
+		event.preventDefault();
+		var keyfileInput = document.getElementById('keyInput');
+		var txtfileInput = document.getElementById('txtInput');
+		var key = keyfileInput.files[0];
+		var txt = txtfileInput.files[0];
+		
+		if (!key || !txt) {
+			alert('Please select files.');
+			return;
+		}
+
+		var formdata = new FormData();
+		formdata.append('key', key);
+		formdata.append('txt', txt);
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST","/dyc",true);
+		xhr.onload = function(){
+			if (xhr.status == 200) {
+				var response = JSON.parse(xhr.responseText);
+				document.getElementById('plaintext').innerHTML = response.msg;
+			}
+		};
+		xhr.send(formdata);
+	};
+
+</script>
+</body>
+</html>
