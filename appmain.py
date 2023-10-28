@@ -2,7 +2,7 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import padding
 import os,random
-
+    
 def generate_key():
     import main_genalgo
     try:
@@ -11,7 +11,6 @@ def generate_key():
         return generate_key()
     
 def ciphertext(key):
-    
     iv = b'\xc7\xe5\xe1\x17\x1f\xfb\xca\xa6\x7fR>\xa4\xe7\xab\x88a'
     # print("iv: ",iv.decode('cp1252'))
     cipher = Cipher(algorithms.AES(key.encode('cp1252')), modes.CBC(iv), backend=default_backend())
@@ -56,4 +55,4 @@ def run_decrypt(key,enc_txt):
     cip=ciphertext(key)
     return decrypt(enc_txt,cip)
 
-
+# print(ciphertext(os.urandom(16).decode('cp1252')))

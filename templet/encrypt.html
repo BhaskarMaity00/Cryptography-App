@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoGraphy!</title>
+	<link rel="stylesheet" href="{{url_for('static',filename='css/style.css')}}">
+</head>
+<body>
+    <div class="from-container">
+		<form id="form"action="{{url_for('encryption')}}" method="post" enctype="multipart/form-data">
+			<h1 style="color:#0d005a;text-align:center;">Encryption</h1>
+			<label for="text" style="color: rgb(4, 49, 1); font-weight: 700;font-size: 20px">Text Area:</label>
+			<textarea id="text" name="text" rows="5" cols="50"></textarea>
+			<!-- <label for="switch" style="color: rgb(176, 3, 3);font-weight: 600;">Do you have key?:<input type="checkbox" id="switch" name="switch"style="--s:50px"></label>
+			<div id="input-field" style="display: none;">
+				<input type="text" id="key" name="key" placeholder="Enter your key"style='height: 20px;line-height:20px; text-align: center;font-size: 16px;'>
+			</div> -->
+			<div style="text-align: right;">
+				<a href="/dyc">Decryption!</a>
+			</div>
+			
+			<button type="submit">Submit</button>
+			<div class="flashes">
+				{% for message in get_flashed_messages() %}
+					{{ message }}
+				{% endfor %}
+			  </div>
+		</form>
+	</div>
+
+	<!-- On checkboxes input appears -->
+    <!-- <script>
+		document.getElementById('switch').addEventListener('change', function () {
+			document.getElementById('input-field').style.display = this.checked ? 'block' : 'none';
+		});
+	</script> -->
+	<script>
+        // Add JavaScript to copy the flash message to the clipboard when clicked
+        var copyButtons = document.querySelectorAll(".copy-message");
+
+        copyButtons.forEach(function(button) {
+            button.addEventListener("click", function() {
+                var textToCopy = button.textContent;
+                var textArea = document.createElement("textarea");
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                //alert("Copied to clipboard: " + textToCopy);
+            });
+        });
+    </script>
+</body>
+</html>
